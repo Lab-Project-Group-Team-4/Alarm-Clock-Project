@@ -2,11 +2,7 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-i2c.cpp
-
-main.cpp
-
 RTC.cpp
 
-rtc3231.cpp
+main.cpp
 

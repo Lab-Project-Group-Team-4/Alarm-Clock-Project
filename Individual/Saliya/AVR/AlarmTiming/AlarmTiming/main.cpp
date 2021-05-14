@@ -1,9 +1,10 @@
 /*
- * AlarmClock.cpp
+ * AlarmTiming.cpp
  *
- * Created: 4/25/2021 3:06:44 PM
+ * Created: 5/3/2021 1:33:23 PM
  * Author : Saliya
  */ 
+
 
 #ifndef F_CPU
 #define F_CPU 1000000UL
@@ -17,21 +18,23 @@
 #include <stdio.h>
 
 
-
 RTC rtc(1);
 
 int main()
 {
 	
-	rtc.ds3231_init();
 	rtc.init();
+	rtc.lcd_init();
 	
-	DDRB = 0b00000100;
-	DDRD = 0b00000010;
-	PORTD = 0b00011111;
 	
-	rtc.setTime(0,0,0);
-	rtc.setTdate(30,4,5,21);
+	DDRB = 0b00000010;
+	DDRD = 0b00000100;
+	PORTB = 0b00011111;
+	
+	
+	rtc.setTime(0,0,0,30,4,5,21);
+	
+	
 	
 	int IsEditingmode = 0;
 	int modeStatus = 0;
@@ -53,18 +56,18 @@ int main()
 	
 	while (1)
 	{
-		rtc.init();
+		rtc.lcd_init();
 		int sec, min, hour, day, wday, month;
 		int year;
 		rtc.NoBlink();
 		rtc.ReadTime(&sec,&min,&hour,&day,&wday,&month,&year);
-		int modeButton = !(PIND & 0b00000001);
-		int increment = !(PIND & 0b00000010);
-		int decrement = !(PIND & 0b00000100);
-		int setButton = !(PIND & 0b00001000);
-		int alarmButton = !(PIND & 0b00010000);
+		int modeButton = !(PINB & 0b00000001);
+		int increment = !(PINB & 0b00000010);
+		int decrement = !(PINB & 0b00000100);
+		int setButton = !(PINB & 0b00001000);
+		int alarmButton = !(PINB & 0b00010000);
 		
-		if (sec<=10 & min == 0 & hour == 0){
+		if (sec<=3 & min == 0 & hour == 0){
 			    for (int slot = 0; slot < 5; slot++) {
 				    manual_stop[slot] = 1;// renew alarms everyday
 			    }
@@ -166,9 +169,9 @@ int main()
 				if ((min == alarm_min[i]) & (hour == alarm_hour[i]) & (init_alarm[i] == 1) & (manual_stop[i] == 1)){
 					current_alarm = i;
 					isalarmblinking = 1;
-					PORTB = 0b00000100;
+					PORTD = (1 << PORTD2);
 					_delay_ms(100);
-					PORTB = 0;
+					PORTD = 0;
 					
 				}
 			}
@@ -237,8 +240,7 @@ int main()
 					}
 
 				}
-				rtc.setTime(sec,min,hour);
-				rtc.setTdate(day,month,wday,year);
+				rtc.setTime(sec,min,hour,day,month,wday,year);
 				rtc.DisplayTimeBlink(sec, min, hour, day, wday, month,year,modeStatus);
 
 			}
@@ -289,16 +291,15 @@ int main()
 					}
 							
 				}
-				rtc.setTime(sec,min,hour);
-				rtc.setTdate(day,month,wday,year);
+				rtc.setTime(sec,min,hour,day,month,wday,year);
 				rtc.DisplayTimeBlink(sec, min, hour, day, wday, month,year,modeStatus);
 
 			}
 		
 			if (setButton ==1 & IsEditingmode ==1)//if on time editing mode, set button is assigned to set the time
 			{
-				rtc.setTime(0,min,hour);
-				rtc.setTdate(day,month,wday,year);
+				rtc.setTime(0,min,hour,day,month,wday,year);
+				
 				IsEditingmode = 0;
 				//mode = 0;
 				rtc.NoBlink();

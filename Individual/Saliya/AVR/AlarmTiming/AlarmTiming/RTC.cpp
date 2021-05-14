@@ -1,7 +1,7 @@
 /*
- * RTC.cpp
+ * CPPFile2.cpp
  *
- * Created: 4/25/2021 3:27:38 PM
+ * Created: 5/3/2021 1:34:22 PM
  *  Author: Saliya
  */ 
 #ifndef F_CPU
@@ -9,20 +9,11 @@
 #endif
 #include <avr/io.h>
 #include <util/delay.h>
-
 #include "RTC.h"
-#include "rtc3231.h"
-#include "i2c.h"
+#include <stdio.h>
 
 
-#define rs PB0
-#define en PB1
-#define direction DDRB
-#define port PORTB
 int pos[5][2] = {{4, 0}, {7, 0}, {1, 1}, {4, 1}, {7, 1}};
-
-static uint8_t lcd_displayparams;
-
 char daysOfweek[][7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 
 
@@ -31,6 +22,123 @@ RTC::RTC(int b)
 {
 	int c = b;
 	c = c/3;
+}
+
+void RTC::i2c_init()
+{
+    TWBR = 0xFF;
+}
+
+void RTC::i2c_start()
+{
+    TWCR = (1<<TWINT)|(1<<TWSTA)|(1<<TWEN);
+    while ((TWCR & (1<<TWINT)) == 0);
+}
+
+void RTC::i2c_stop()
+{
+    TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN);
+}
+
+void RTC::i2c_write(unsigned char data)
+{
+    TWDR = data;
+    TWCR = (1<<TWINT)|(1<<TWEN);
+    while ((TWCR & (1<<TWINT)) == 0);
+}
+unsigned char RTC::i2c_read()
+{
+    TWCR = (1 << TWINT) | (1 << TWEN)| (1 << TWEA);
+    while ((TWCR & (1 << TWINT)) == 0);
+    return TWDR;
+
+}
+
+unsigned char RTC::i2c_lastread()
+{
+	TWCR = (1 << TWINT) | (1 << TWEN);
+	while ((TWCR & (1 << TWINT)) == 0);
+	return TWDR;
+	
+}
+
+unsigned char RTC::binTobcd(unsigned char data)
+{
+   
+	char bcd;
+	char n, dig, num, count;
+
+	num = data;
+	count = 0;
+	bcd = 0;
+
+	for (n = 0; n < 4; n++) {
+		dig = num % 10;
+		num = num / 10;
+		bcd = (dig << count) | bcd;
+		count += 4;
+	}
+	return bcd;
+}
+
+unsigned char RTC::bcdTobin(unsigned char data)
+{
+    char bin;
+    bin = ((((data & (1<<7)) |(data & (1<<6)) |(data & (1<<5)) |(data & (1<<4))) * 0x0A) >> 4) + (data & (1<<3)) |(data & (1<<2)) |(data & (1<<1)) |(data & (1<<0));
+	return bin;
+}
+
+
+void RTC::clock_init()
+{
+    i2c_start();
+    i2c_write(RTC_WADDR);
+	i2c_write(0x0E);
+	i2c_write(0x20);
+	i2c_write(0x08);
+    i2c_stop();
+	
+}
+
+void RTC::setTime(int sec, int min, int hour,int day, int mon,int wday, int year)
+{
+    i2c_start();
+    i2c_write(RTC_WADDR);
+    i2c_write(0x00);
+    i2c_write(binTobcd(sec));
+    i2c_write(binTobcd(min));
+    i2c_write(binTobcd(hour));
+	i2c_write(binTobcd(wday));
+	i2c_write(binTobcd(day));
+	i2c_write(binTobcd(mon));
+	i2c_write(binTobcd(year));
+	i2c_stop();
+}
+
+void RTC::ReadTime(int *sec, int *min, int *hour, int *day, int *wday, int *month, int *year)
+{
+    i2c_start();
+    i2c_write(RTC_WADDR);
+    i2c_write(0x00);
+    i2c_stop();
+	
+    i2c_start();
+    i2c_write(RTC_RADDR);
+    *sec = bcdTobin(i2c_read());
+    *min = bcdTobin(i2c_read());
+    *hour = bcdTobin(i2c_read());
+    *wday = bcdTobin(i2c_read());
+    *day = bcdTobin(i2c_read());
+    *month = bcdTobin(i2c_read());
+    *year = bcdTobin(i2c_lastread());
+    i2c_stop();
+
+}
+
+void RTC::init()
+{
+    i2c_init();
+	clock_init();
 }
 
 void RTC::command(unsigned char cmd)
@@ -49,7 +157,7 @@ void RTC::command(unsigned char cmd)
 	
 }
 
-void RTC::init(void)
+void RTC::lcd_init(void)
 {
 	direction = 0xFF;
 	_delay_ms(2);
@@ -193,48 +301,3 @@ void RTC::init(void)
 	 sprintf(slot_, "%d",slot);
 	 string(slot_);
  }
- 
-
- 
- void RTC::ds3231_init()
- {
-	 i2c_init();
-	 rtc3231_init();
-	 
- }
- 
-void RTC::ReadTime(int *sec, int *min, int *hour, int *day, int *wday, int *month, int *year)
-{
-	struct rtc_time time;
-	struct rtc_date date;
-	rtc3231_read_datetime(&time,&date);
-	*sec = time.sec;
-	*min = time.min;
-	*hour = time.hour;
-	*day = date.day;
-	*wday = date.wday;
-	*month = date.month;
-	*year = date.year;
-		 
-}
-
-void RTC::setTime(int sec, int min, int hour)
-{
-	struct rtc_time newTime;
-	newTime.sec = sec;
-	newTime.min = min;
-	newTime.hour = hour;
-	rtc3231_write_time(&newTime);
-}
-
-void RTC::setTdate(int day, int month, int wday, int year)
-{
-	struct rtc_date newDate;
-	newDate.day = day;
-	newDate.month = month;
-	newDate.wday = wday;
-	newDate.year = year;
-	rtc3231_write_date(&newDate);
-}
-
- 
