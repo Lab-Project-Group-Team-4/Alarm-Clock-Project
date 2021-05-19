@@ -292,7 +292,7 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x16fa
+.text           0x00000000     0x16c0
  *(.vectors)
  .vectors       0x00000000       0x68 D:/Atmel Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
                 0x00000000                __vector_default
@@ -405,96 +405,96 @@ END GROUP
                 0x00000108       0x14 RTC.o
                 0x00000108                _ZN3RTC12i2c_lastreadEv
  .text._ZN3RTC8binTobcdEh
-                0x0000011c       0x48 RTC.o
+                0x0000011c       0x28 RTC.o
                 0x0000011c                _ZN3RTC8binTobcdEh
  .text._ZN3RTC8bcdTobinEh
-                0x00000164       0x46 RTC.o
-                0x00000164                _ZN3RTC8bcdTobinEh
+                0x00000144       0x16 RTC.o
+                0x00000144                _ZN3RTC8bcdTobinEh
  .text._ZN3RTC10clock_initEv
-                0x000001aa       0x36 RTC.o
-                0x000001aa                _ZN3RTC10clock_initEv
+                0x0000015a       0x36 RTC.o
+                0x0000015a                _ZN3RTC10clock_initEv
  .text._ZN3RTC7setTimeEiiiiiii
-                0x000001e0       0xb8 RTC.o
-                0x000001e0                _ZN3RTC7setTimeEiiiiiii
+                0x00000190       0xb8 RTC.o
+                0x00000190                _ZN3RTC7setTimeEiiiiiii
  .text._ZN3RTC8ReadTimeEPiS0_S0_S0_S0_S0_S0_
-                0x00000298      0x112 RTC.o
-                0x00000298                _ZN3RTC8ReadTimeEPiS0_S0_S0_S0_S0_S0_
+                0x00000248      0x112 RTC.o
+                0x00000248                _ZN3RTC8ReadTimeEPiS0_S0_S0_S0_S0_S0_
  .text._ZN3RTC4initEv
-                0x000003aa       0x16 RTC.o
-                0x000003aa                _ZN3RTC4initEv
+                0x0000035a       0x16 RTC.o
+                0x0000035a                _ZN3RTC4initEv
  .text._ZN3RTC7commandEh
-                0x000003c0       0x3e RTC.o
-                0x000003c0                _ZN3RTC7commandEh
+                0x00000370       0x48 RTC.o
+                0x00000370                _ZN3RTC7commandEh
  .text._ZN3RTC8lcd_initEv
-                0x000003fe       0x50 RTC.o
-                0x000003fe                _ZN3RTC8lcd_initEv
+                0x000003b8       0x50 RTC.o
+                0x000003b8                _ZN3RTC8lcd_initEv
  .text._ZN3RTC9characterEh
-                0x0000044e       0x4a RTC.o
-                0x0000044e                _ZN3RTC9characterEh
+                0x00000408       0x50 RTC.o
+                0x00000408                _ZN3RTC9characterEh
  .text._ZN3RTC6stringEPc
-                0x00000498       0x38 RTC.o
-                0x00000498                _ZN3RTC6stringEPc
+                0x00000458       0x38 RTC.o
+                0x00000458                _ZN3RTC6stringEPc
  .text._ZN3RTC5clearEv
-                0x000004d0       0x26 RTC.o
-                0x000004d0                _ZN3RTC5clearEv
+                0x00000490       0x26 RTC.o
+                0x00000490                _ZN3RTC5clearEv
  .text._ZN3RTC9SetCursorEcc
-                0x000004f6       0x28 RTC.o
-                0x000004f6                _ZN3RTC9SetCursorEcc
+                0x000004b6       0x28 RTC.o
+                0x000004b6                _ZN3RTC9SetCursorEcc
  .text._ZN3RTC5BlinkEv
-                0x0000051e        0x8 RTC.o
-                0x0000051e                _ZN3RTC5BlinkEv
+                0x000004de        0x8 RTC.o
+                0x000004de                _ZN3RTC5BlinkEv
  .text._ZN3RTC7NoBlinkEv
-                0x00000526        0x8 RTC.o
-                0x00000526                _ZN3RTC7NoBlinkEv
+                0x000004e6        0x8 RTC.o
+                0x000004e6                _ZN3RTC7NoBlinkEv
  .text._ZN3RTC11DisplayTimeEiiiiiii
-                0x0000052e       0xe4 RTC.o
-                0x0000052e                _ZN3RTC11DisplayTimeEiiiiiii
+                0x000004ee       0xe4 RTC.o
+                0x000004ee                _ZN3RTC11DisplayTimeEiiiiiii
  .text._ZN3RTC16DisplayTimeBlinkEiiiiiiii
-                0x00000612      0x140 RTC.o
-                0x00000612                _ZN3RTC16DisplayTimeBlinkEiiiiiiii
+                0x000005d2      0x146 RTC.o
+                0x000005d2                _ZN3RTC16DisplayTimeBlinkEiiiiiiii
  .text._ZN3RTC9alarmdispEiii
-                0x00000752       0xb8 RTC.o
-                0x00000752                _ZN3RTC9alarmdispEiii
+                0x00000718       0xb8 RTC.o
+                0x00000718                _ZN3RTC9alarmdispEiii
  .text._ZN3RTC8slotdispEi
-                0x0000080a       0x86 RTC.o
-                0x0000080a                _ZN3RTC8slotdispEi
+                0x000007d0       0x86 RTC.o
+                0x000007d0                _ZN3RTC8slotdispEi
  .text._Z41__static_initialization_and_destruction_0ii
-                0x00000890       0x18 main.o
- .text.main     0x000008a8      0x860 main.o
-                0x000008a8                main
+                0x00000856       0x18 main.o
+ .text.main     0x0000086e      0x860 main.o
+                0x0000086e                main
  .text._GLOBAL__sub_I_rtc
-                0x00001108        0xe main.o
- .text.libgcc   0x00001116        0xc d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
-                0x00001116                __tablejump2__
+                0x000010ce        0xe main.o
+ .text.libgcc   0x000010dc        0xc d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_tablejump2.o)
+                0x000010dc                __tablejump2__
  .text.avr-libc
-                0x00001122       0x44 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
-                0x00001122                sprintf
+                0x000010e8       0x44 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(sprintf.o)
+                0x000010e8                sprintf
  .text.avr-libc
-                0x00001166      0x3c2 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
-                0x00001166                vfprintf
+                0x0000112c      0x3c2 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(vfprintf_std.o)
+                0x0000112c                vfprintf
  .text.avr-libc
-                0x00001528       0x16 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
-                0x00001528                strnlen_P
+                0x000014ee       0x16 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen_P.o)
+                0x000014ee                strnlen_P
  .text.avr-libc
-                0x0000153e       0x16 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
-                0x0000153e                strnlen
+                0x00001504       0x16 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(strnlen.o)
+                0x00001504                strnlen
  .text.avr-libc
-                0x00001554       0x78 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
-                0x00001554                fputc
+                0x0000151a       0x78 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(fputc.o)
+                0x0000151a                fputc
  .text.avr-libc
-                0x000015cc       0xbc d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
-                0x000015cc                __ultoa_invert
+                0x00001592       0xbc d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr5\libc.a(ultoa_invert.o)
+                0x00001592                __ultoa_invert
  .text.libgcc.prologue
-                0x00001688       0x38 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
-                0x00001688                __prologue_saves__
+                0x0000164e       0x38 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_prologue.o)
+                0x0000164e                __prologue_saves__
  .text.libgcc.prologue
-                0x000016c0       0x36 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
-                0x000016c0                __epilogue_restores__
-                0x000016f6                . = ALIGN (0x2)
+                0x00001686       0x36 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_epilogue.o)
+                0x00001686                __epilogue_restores__
+                0x000016bc                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000016f6        0x0 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
-                0x000016f6                _exit
-                0x000016f6                exit
+ .fini9         0x000016bc        0x0 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+                0x000016bc                _exit
+                0x000016bc                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -513,11 +513,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000016f6        0x4 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
+ .fini0         0x000016bc        0x4 d:/atmel studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000016fa                _etext = .
+                0x000016c0                _etext = .
 
-.data           0x00800100       0xb2 load address 0x000016fa
+.data           0x00800100       0xb2 load address 0x000016c0
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -547,8 +547,8 @@ END GROUP
                 0x008001b2                rtc
  *(COMMON)
                 0x008001b3                PROVIDE (__bss_end, .)
-                0x000016fa                __data_load_start = LOADADDR (.data)
-                0x000017ac                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000016c0                __data_load_start = LOADADDR (.data)
+                0x00001772                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x008001b3        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
@@ -634,41 +634,41 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x2ae7
+.debug_info     0x00000000     0x2a56
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x5f4 D:/Atmel Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_info    0x000005f4     0x1850 RTC.o
- .debug_info    0x00001e44      0xca3 main.o
+ .debug_info    0x000005f4     0x17f8 RTC.o
+ .debug_info    0x00001dec      0xc6a main.o
 
-.debug_abbrev   0x00000000      0xb04
+.debug_abbrev   0x00000000      0xafb
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x5a2 D:/Atmel Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_abbrev  0x000005a2      0x343 RTC.o
- .debug_abbrev  0x000008e5      0x21f main.o
+ .debug_abbrev  0x000005a2      0x33a RTC.o
+ .debug_abbrev  0x000008dc      0x21f main.o
 
-.debug_line     0x00000000      0xc68
+.debug_line     0x00000000      0xc13
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x134 D:/Atmel Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_line    0x00000134      0x64a RTC.o
- .debug_line    0x0000077e      0x4ea main.o
+ .debug_line    0x00000134      0x5ff RTC.o
+ .debug_line    0x00000733      0x4e0 main.o
 
 .debug_frame    0x00000000      0x3d0
  *(.debug_frame)
  .debug_frame   0x00000000      0x37c RTC.o
  .debug_frame   0x0000037c       0x54 main.o
 
-.debug_str      0x00000000      0x853
+.debug_str      0x00000000      0x84d
  *(.debug_str)
  .debug_str     0x00000000      0x208 D:/Atmel Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega328p/avr5/crtatmega328p.o
- .debug_str     0x00000208      0x516 RTC.o
-                                0x569 (size before relaxing)
- .debug_str     0x0000071e      0x135 main.o
+ .debug_str     0x00000208      0x510 RTC.o
+                                0x563 (size before relaxing)
+ .debug_str     0x00000718      0x135 main.o
                                 0x634 (size before relaxing)
 
-.debug_loc      0x00000000     0x1865
+.debug_loc      0x00000000     0x1784
  *(.debug_loc)
- .debug_loc     0x00000000     0x1323 RTC.o
- .debug_loc     0x00001323      0x542 main.o
+ .debug_loc     0x00000000     0x12a4 RTC.o
+ .debug_loc     0x000012a4      0x4e0 main.o
 
 .debug_macinfo
  *(.debug_macinfo)

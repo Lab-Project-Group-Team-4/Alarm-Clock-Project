@@ -5,7 +5,7 @@
  *  Author: Saliya
  */ 
 #ifndef F_CPU
-#define  F_CPU 1000000UL
+#define  F_CPU 16000000UL
 #endif
 #include <avr/io.h>
 #include <util/delay.h>
@@ -65,7 +65,7 @@ unsigned char RTC::i2c_lastread()
 unsigned char RTC::binTobcd(unsigned char data)
 {
    
-	char bcd;
+	/*char bcd;
 	char n, dig, num, count;
 
 	num = data;
@@ -78,14 +78,17 @@ unsigned char RTC::binTobcd(unsigned char data)
 		bcd = (dig << count) | bcd;
 		count += 4;
 	}
-	return bcd;
+	return bcd;*/
+	return( (data/10*16) + (data%10) );
 }
 
 unsigned char RTC::bcdTobin(unsigned char data)
 {
-    char bin;
+   /* char bin;
     bin = ((((data & (1<<7)) |(data & (1<<6)) |(data & (1<<5)) |(data & (1<<4))) * 0x0A) >> 4) + (data & (1<<3)) |(data & (1<<2)) |(data & (1<<1)) |(data & (1<<0));
-	return bin;
+	
+	return bin;*/
+    return( (data/16*10) + (data%16) );
 }
 
 
@@ -108,6 +111,7 @@ void RTC::setTime(int sec, int min, int hour,int day, int mon,int wday, int year
     i2c_write(binTobcd(sec));
     i2c_write(binTobcd(min));
     i2c_write(binTobcd(hour));
+
 	i2c_write(binTobcd(wday));
 	i2c_write(binTobcd(day));
 	i2c_write(binTobcd(mon));
@@ -127,6 +131,7 @@ void RTC::ReadTime(int *sec, int *min, int *hour, int *day, int *wday, int *mont
     *sec = bcdTobin(i2c_read());
     *min = bcdTobin(i2c_read());
     *hour = bcdTobin(i2c_read());
+
     *wday = bcdTobin(i2c_read());
     *day = bcdTobin(i2c_read());
     *month = bcdTobin(i2c_read());
@@ -146,14 +151,14 @@ void RTC::command(unsigned char cmd)
 	port = (port & 0x0F)|(cmd & 0xF0);
 	port &= ~(1<<rs);
 	port |= (1<<en);
-	_delay_us(2);
+	//_delay_us(2);
 	port &= ~(1<<en);
 	//_delay_us(200);
 	port = (port & 0x0F)|(cmd << 4);
 	port |= (1<<en);
 	//_delay_us(2);
 	port &= ~(1<<en);
-	//_delay_ms(2);
+	_delay_us(50);
 	
 }
 

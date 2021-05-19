@@ -7,7 +7,7 @@
 
 
 #ifndef F_CPU
-#define F_CPU 1000000UL
+#define F_CPU 16000000UL
 #endif
 
 #include <avr/io.h>
@@ -32,7 +32,7 @@ int main()
 	PORTB = 0b00011111;
 	
 	
-	rtc.setTime(0,0,0,30,4,5,21);
+	rtc.setTime(0,0,0,30,4,5,12);
 	
 	
 	
@@ -57,8 +57,7 @@ int main()
 	while (1)
 	{
 		rtc.lcd_init();
-		int sec, min, hour, day, wday, month;
-		int year;
+		int sec, min, hour, day, wday, month, year;
 		rtc.NoBlink();
 		rtc.ReadTime(&sec,&min,&hour,&day,&wday,&month,&year);
 		int modeButton = !(PINB & 0b00000001);
@@ -183,7 +182,7 @@ int main()
 							
 			if (modeButton == 1 & IsEditingmode == 0){
 				IsEditingmode = 1;//time editing 
-				_delay_ms(5);
+				//_delay_ms(50);
 			}
 		
 			if (IsEditingmode ==1 & modeButton  == 1)
@@ -315,7 +314,7 @@ int main()
 		
 			
 		}
-		_delay_ms(100);
+		_delay_ms(500);
 	}
 	
 	
