@@ -1,12 +1,5 @@
-
 // Define pin 10 for buzzer, you can use any other digital pins (Pin 0-13)
-const int speakerPin = 13;
-const int inbuttonPin = A0;
-const int clbuttonpin =A1;
-const int change =A2;
-const int volchng =A3;
-const int volum=11;
-const int valu=400;
+
 
 int initial = 0;
 // Change to 0.5 for a slower version of the song, 1.25 for a faster version
@@ -215,15 +208,26 @@ int notes_G[]={NOTE_G4,NOTE_C4,NOTE_DS4,NOTE_F4,NOTE_G4,NOTE_C4,NOTE_E4,NOTE_F4,
 int duration_G[]={500, 500, 250, 250, 500, 500, 250, 250, 1500, 1500, 250, 250, 1000, 1000, 250, 250, 500, 500, 250, 250, 1500, 1500, 1000, 250, 250, 1000, 1000, 250, 250, 500, 250, 250, 500, 500, 1000, 1000, 250, 250, 1000, 1000, 250, 250, 500, 500, 250, 250, 500, 500, 500, 250, 250, 500, 500, 250, 250, 1500, 1500, 250, 250, 1000, 1000, 250, 250, 500, 500, 250, 250, 1500, 1500, 1000, 250, 250, 1000, 1000, 250, 250, 500, 250, 250, 500, 500, 1000, 1000, 250, 250, 1000, 1000, 250, 250, 500, 500, 250, 250, 500};
 int notone[]={9,10,11,13};
 
-void Pirates()
+const int speakerPin = 13;
+int var=0;
+
+int next_bu=7;
+int pre_bu=8;
+
+int pla_=2;
+int stop_=3;
+
+int maxnumber= 2; //basic denomination
+int tracknumber;
+
+int Pirates()
 {
   const int totalNotes = sizeof(notes) / sizeof(int);
   // Loop through each note
   for (int i = 0; i < totalNotes; i++)
-  {int paubut=analogRead(clbuttonpin);
-   if (paubut<800){
-    return;
-  }
+  {if (var==0){
+    return 0;}
+    Serial.println(i);
     
     const int currentNote = notes[i];
     float wait = durations[i] / songSpeed;
@@ -241,16 +245,15 @@ void Pirates()
   }
 }
 
-void GameOfThrones() {
+int GameOfThrones() {
   {
   const int totalNotes = sizeof(notes_G) / sizeof(int);
   // Loop through each note
   for (int i = 0; i < totalNotes; i++)
-    {int paubut=analogRead(clbuttonpin);
-   if (paubut<800){
-   return;
-  }
-     const int currentNote = notes_G[i];
+     {if (var==0){
+    return 0;}
+     Serial.println(i);
+      const int currentNote = notes_G[i];
     float wait = duration_G[i] / songSpeed_G;
     // Play tone if currentNote is not 0 frequency, otherwise pause (noTone)
     if (currentNote != 0)
@@ -271,30 +274,73 @@ void GameOfThrones() {
 }
 
 
-void setup() {
-    pinMode(speakerPin, OUTPUT);
-    pinMode(volum,OUTPUT);
+
+void play_(){
+ 
+ 
+  if(tracknumber==1){
+    Pirates();}
+  else{if(tracknumber==2){
+    GameOfThrones();}}
+}
+void pla(){
+  Serial.println("play"); 
+  var=1;}
+void sto(){Serial.println("sto");
+  var=0;
 }
 
-void loop()
-{   int pobut = analogRead(inbuttonPin); 
-    if (pobut < valu ){ 
-      if (initial==0){
-        for (int j = 0; j < 4; j++)
-        {Pirates();}}
-      else {for (int j = 0; j < 4; j++)
-        {GameOfThrones();}
-      }
-    }
-    int chng=analogRead(change);
-    if  (chng <valu){
-        initial=1;
+  
+void next(){
+  Serial.println("next");
+  if(tracknumber<maxnumber){tracknumber=tracknumber+1; //increment file name,curb the filename to 3(for testing=3)  
+     Serial.println(tracknumber); //name of the new file to be played}
+  }
+  else{tracknumber=1;
+     Serial.println(tracknumber); //name of the new file to be played}
      }
-     int volumin=analogRead(volchng);
-    if (volumin<valu){analogWrite(volum,50);}
-    else{analogWrite(volum,1200);}
-        
-    
-  // Nothing in loop. Music only plays once.
-  // You can click reset on Arduino to replay the song.
+     
+     
 }
+
+void pre(){
+  Serial.println("back");
+  if(tracknumber>1){tracknumber=tracknumber-1; //increment file name,curb the filename to 3(for testing=3)  
+
+     Serial.println(tracknumber); //name of the new file to be played}
+  }
+   else{tracknumber=maxnumber;
+     Serial.println(tracknumber); //name of the new file to be played}
+     }  
+}
+
+void setup(){
+  
+  pinMode(next_bu,INPUT_PULLUP);
+  pinMode(pre_bu,INPUT_PULLUP);
+  
+  Serial.begin(9600);
+  pinMode(stop_,INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(stop_),sto,FALLING);
+
+  pinMode(pla_,INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(pla_),pla,FALLING);
+
+  tracknumber=1;
+
+  
+}
+void loop(){    
+ if (var==1){play_();}
+ int voltage_ne=digitalRead(next_bu);
+ int voltage_pre=digitalRead(pre_bu);
+  if (voltage_ne==LOW){
+    next();
+    delay(1000);
+  }
+   if (voltage_pre==LOW){
+    pre();
+    delay(1000);
+  }
+    }
+  
