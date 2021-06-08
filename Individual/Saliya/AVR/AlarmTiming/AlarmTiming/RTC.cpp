@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 
-int pos[5][2] = {{4, 0}, {7, 0}, {1, 1}, {4, 1}, {7, 1}};
+int pos[5][2] = {{4, 0},{1, 0}, {1, 1}, {4, 1}, {7, 1}};
 char daysOfweek[][7] = {"SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"};
 
 
@@ -65,29 +65,13 @@ unsigned char RTC::i2c_lastread()
 unsigned char RTC::binTobcd(unsigned char data)
 {
    
-	/*char bcd;
-	char n, dig, num, count;
-
-	num = data;
-	count = 0;
-	bcd = 0;
-
-	for (n = 0; n < 4; n++) {
-		dig = num % 10;
-		num = num / 10;
-		bcd = (dig << count) | bcd;
-		count += 4;
-	}
-	return bcd;*/
+	
 	return( (data/10*16) + (data%10) );
 }
 
 unsigned char RTC::bcdTobin(unsigned char data)
 {
-   /* char bin;
-    bin = ((((data & (1<<7)) |(data & (1<<6)) |(data & (1<<5)) |(data & (1<<4))) * 0x0A) >> 4) + (data & (1<<3)) |(data & (1<<2)) |(data & (1<<1)) |(data & (1<<0));
-	
-	return bin;*/
+  
     return( (data/16*10) + (data%16) );
 }
 
@@ -230,15 +214,17 @@ void RTC::lcd_init(void)
  // functions 
  void RTC::DisplayTime(int sec,int min,int hour, int day, int wday, int month, int year)
  {
+	 //clear();
 	 char time[16];
 	 char date[16];
-	 sprintf(time,"%.2d:%.2d:%.2d\n",sec,min,hour);
+	 sprintf(time,"%.2d:%.2d:%.2d\n",hour,min,sec);
 	 sprintf(date,"%.2d/%.2d/%.2d",day,month,year);
 	 string(time);
-	 string("");
-	 string(daysOfweek[wday]);
+	 string("       ");
 	 command(0xC0);
 	 string(date);
+	 string(" ->");
+	 string(daysOfweek[wday]);
  }
  
  void RTC::DisplayTimeBlink(int sec,int min,int hour, int day, int wday, int month, int year, int mode)
@@ -248,13 +234,14 @@ void RTC::lcd_init(void)
 	 SetCursor(0,0);
 	 char time[16];
 	 char date[16];
-	 sprintf(time,"%.2d:%.2d:%.2d",sec,min,hour);
+	 sprintf(time,"%.2d:%.2d:%.2d",hour,min,sec);
 	 sprintf(date,"%.2d/%.2d/%.2d",day,month,year);
 	 string(time);
-	 string(" ");
-	 string(daysOfweek[wday]);
+	 string("        ");
 	 command(0xC0);
 	 string(date);
+	 string(" ->");
+	 string(daysOfweek[wday]);
 	 int col = pos[mode][0];
 	 int row = pos[mode][1];
 	 SetCursor(row,col);
@@ -273,23 +260,37 @@ void RTC::lcd_init(void)
 	 //_delay_us(1);
  }
  
- void RTC::alarmdisp(int min, int hour, int mode)
+ void RTC::alarmdisp(int min, int hour, int day, int mon, int mode)
  {
 	 //clear();
 	 SetCursor(0,0);
-	 string("HOUR:MIN        ");
-	 SetCursor(1,0);
 	 char time[16];
+	 char date[16];
+	 int row;
 	 int col;
-	 sprintf(time,"%.2d  :%.2d",hour,min);
+	 sprintf(time,"H:M -> %.2d:%.2d   ",hour,min);
+	 sprintf(date,"D/M -> %.2d/%.2d   ",day,mon);
 	 string(time);
+	 SetCursor(1,0);
+	 string(date);
 	 if (mode == 1){
-		 col = 1; 
+		 col = 8; 
+		 row = 0;
 	 }
-	 else{
-		 col = 6;
+	 else if (mode == 0){
+		 col = 11;
+		 row = 0;
 	 }
-	 SetCursor(1,col);
+	 else if (mode == 2){
+		 col = 8;
+		 row = 1;
+	 }
+	 else if (mode == 3){
+		 col = 11;
+		 row = 1;
+	 }
+	 
+	 SetCursor(row,col);
 
 	Blink();
 	//_delay_ms(100);
@@ -300,7 +301,7 @@ void RTC::lcd_init(void)
  {
 	 //clear();
 	 SetCursor(0,0);
-	 string("SELECT SLOT        ");
+	 string("SELECT SLOT(0-4)      ");
 	 SetCursor(1,0);
 	 char slot_[16];
 	 sprintf(slot_, "%d",slot);

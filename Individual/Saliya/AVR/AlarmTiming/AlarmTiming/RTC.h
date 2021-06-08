@@ -46,7 +46,7 @@ class RTC{
 	void setDate(int day, int mon,int wday, int year);
 	void DisplayTime(int sec,int min,int hour, int day, int wday, int month, int year);
 	void DisplayTimeBlink(int sec,int min,int hour, int day, int wday, int month, int year, int mode);
-	void alarmdisp(int min, int hour, int mode);
+	void alarmdisp(int min, int hour, int day, int mon, int mode);
 	void slotdisp(int slot);
 };
 

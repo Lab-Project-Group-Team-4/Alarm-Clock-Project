@@ -27,12 +27,12 @@ int main()
 	rtc.lcd_init();
 	
 	
-	DDRB = 0b00000010;
+	DDRB = 0b00000000;
 	DDRD = 0b00000100;
-	PORTB = 0b00011111;
+	PORTB = 0b00111111;
 	
 	
-	rtc.setTime(0,0,0,30,4,5,12);
+	rtc.setTime(0,0,0,1,1,4,21);
 	
 	
 	
@@ -41,7 +41,15 @@ int main()
 	int isalarmeditingmode = 0;
 	int alarmmode = 0;
 	int alarm_min[5] = {0, 0, 0, 0, 0}; // variables for set the alarm
+	int alarmMin = 0;
+	int alarmHour = 0;
 	int alarm_hour[5] = {0, 0, 0, 0, 0};//  variables for set the alarm
+	
+	int alarm_date[5] = {0, 0, 0, 0, 0}; // variables for set the alarm
+	int alarmDay = 0;
+	int alarmMon = 0;
+	int alarm_mon[5] = {0, 0, 0, 0, 0};//  variables for set the alarm
+		
 	int init_alarm[5] = {0, 0, 0, 0, 0};	
 	int manual_stop[5] = {1, 1, 1, 1, 1};
 	int alarmslot = 0;
@@ -49,7 +57,7 @@ int main()
 	int current_alarm;
 	int isalarmblinking = 0;
 	int var = 0;	
-		
+	int AlarmBack = 0;	
 
 
 	
@@ -58,22 +66,25 @@ int main()
 	{
 		rtc.lcd_init();
 		int sec, min, hour, day, wday, month, year;
+		int sec1, min1, hour1, day1, wday1, month1, year1;
 		rtc.NoBlink();
-		rtc.ReadTime(&sec,&min,&hour,&day,&wday,&month,&year);
+		//rtc.ReadTime(&sec,&min,&hour,&day,&wday,&month,&year);
+		rtc.ReadTime(&sec1,&min1,&hour1,&day1,&wday1,&month1,&year1);
 		int modeButton = !(PINB & 0b00000001);
 		int increment = !(PINB & 0b00000010);
 		int decrement = !(PINB & 0b00000100);
 		int setButton = !(PINB & 0b00001000);
 		int alarmButton = !(PINB & 0b00010000);
-		
+		int backButton = !(PINB & 0b00100000);
 		if (sec<=3 & min == 0 & hour == 0){
 			    for (int slot = 0; slot < 5; slot++) {
 				    manual_stop[slot] = 1;// renew alarms everyday
 			    }
 		}
-		if (alarmButton == 1 & isalarmblinking == 0)// if there is not blinking alarm, alarm button is assigned to enter the alarm editing mode
+		if (alarmButton == 1 & isalarmblinking == 0 & isalarmeditingmode == 0 & AlarmBack == 0)// if there is not blinking alarm, alarm button is assigned to enter the alarm editing mode
 		{ 
 			isalarmeditingmode = 1;
+			//AlarmBack = 1;
 			var = 0;
 		}
 		if (isalarmeditingmode == 1)
@@ -95,64 +106,120 @@ int main()
 					}
 				}
 				
-				if (setButton ==1)//assigned set button to set the slot
+				if (setButton ==1)// set button to set the slot
 				{
 					select_slot = 1;//set the alarm slot and identify a alarm slot was selected
+					alarmMin = alarm_min[alarmslot];
+					alarmHour =  alarm_hour[alarmslot];
+					alarmDay = alarm_date[alarmslot];
+					alarmMon = alarm_mon[alarmslot];
+					//_delay_ms(1000);
+				
+					
 				}
+
 			}
 			
 			else
 			{
-			 rtc.alarmdisp(alarm_min[alarmslot], alarm_hour[alarmslot], alarmmode);//display alarm editing mode
+				
+				rtc.alarmdisp(alarmMin, alarmHour, alarmDay, alarmMon, alarmmode);//display alarm editing mode
+				
 			
 			if (modeButton ==1)// in the alarm editing mode, after selected the slot, the mode button assigned to change hour or min
 			{
-				alarmmode = !alarmmode;
+				alarmmode += 1;
+				if (alarmmode >3)
+				{
+					alarmmode = 0;
+				}
+				
 			}
 			if (increment ==1)
 			{
 				if (alarmmode ==0)
 				{
-					alarm_min[alarmslot] += 1;
-					if (alarm_min[alarmslot] >59)
+					alarmMin += 1;
+					if (alarmMin >59)
 					{
-						alarm_min[alarmslot] = 0;
+						alarmMin = 0;
 					}
 				}
 				
 				if (alarmmode == 1)
 				{
-					alarm_hour[alarmslot] += 1;
-					if (alarm_hour[alarmslot] >23)
+					alarmHour += 1;
+					if (alarmHour >23)
 					{
-						alarm_hour[alarmslot] = 0;
+						alarmHour = 0;
 					}
 				}
+				
+				if (alarmmode ==2)
+				{
+					alarmDay += 1;
+					if (alarmDay >31)
+					{
+						alarmDay = 1;
+					}
+				}
+								
+				if (alarmmode == 3)
+				{
+					alarmMon += 1;
+					if (alarmMon >12)
+					{
+						alarmMon = 1;
+					}
+				}
+
 			}
 
 			if (decrement ==1)
 			{
 				if (alarmmode ==0)
 				{
-					alarm_min[alarmslot] -= 1;
-					if (alarm_min[alarmslot] <0)
+					alarmMin -= 1;
+					if (alarmMin <0)
 					{
-						alarm_min[alarmslot] = 59;
+						alarmMin = 59;
 					}
 				}
 				
 				if (alarmmode == 1)
 				{
-					alarm_hour[alarmslot] -= 1;
-					if (alarm_hour[alarmslot] <0)
+					alarmHour -= 1;
+					if (alarmHour <0)
 					{
-						alarm_hour[alarmslot] = 23;
+						alarmHour = 23;
 					}
 				}
+				if (alarmmode == 2)
+				{
+					alarmDay -= 1;
+					if (alarmDay <1)
+					{
+						alarmDay = 31;
+					}
+				}
+				
+				if (alarmmode == 3)
+				{
+					alarmMon -= 1;
+					if (alarmMon <1)
+					{
+						alarmMon = 12;
+					}
+				}
+
 			}
-			
+		
 			if (setButton == 1 )// if slot is selected, set button is assigned to set the current time as the alarm
 			{
+				alarm_min[alarmslot] = alarmMin;
+				alarm_hour[alarmslot] = alarmHour;
+				alarm_date[alarmslot] = alarmDay;
+				alarm_mon[alarmslot] = alarmMon;
 				isalarmeditingmode = 0;
 				select_slot = 0;
 				init_alarm[alarmslot] = 1;
@@ -160,15 +227,14 @@ int main()
 				manual_stop[alarmslot] = 1;
 			}
 		}
-
-			
+	
 		}
 		else{//if not selected alarm editing mode
 			for (int i =0; i<5;i++){
-				if ((min == alarm_min[i]) & (hour == alarm_hour[i]) & (init_alarm[i] == 1) & (manual_stop[i] == 1)){
+				if ((min1 == alarm_min[i]) & (hour1 == alarm_hour[i])  &(day1 == alarm_date[i]) & (month1 == alarm_mon[i]) & (init_alarm[i] == 1) & (manual_stop[i] == 1)){
 					current_alarm = i;
 					isalarmblinking = 1;
-					PORTD = (1 << PORTD2);
+					PORTD = 0b00000100;
 					_delay_ms(100);
 					PORTD = 0;
 					
@@ -176,12 +242,14 @@ int main()
 			}
 			if ((alarmButton == 1) & (isalarmblinking == 1)){//manually stopping of current blinking alarm
 				manual_stop[current_alarm] = 0;
+				init_alarm[current_alarm] = 0;
 				isalarmblinking = 0;
 				_delay_ms(500);
 			}
 							
 			if (modeButton == 1 & IsEditingmode == 0){
 				IsEditingmode = 1;//time editing 
+				sec = sec1; min = min1 ;day = day1;wday = wday1;month = month1;hour = hour1;year = year1;
 				//_delay_ms(50);
 			}
 		
@@ -239,7 +307,7 @@ int main()
 					}
 
 				}
-				rtc.setTime(sec,min,hour,day,month,wday,year);
+				//rtc.setTime(sec,min,hour,day,month,wday,year);
 				rtc.DisplayTimeBlink(sec, min, hour, day, wday, month,year,modeStatus);
 
 			}
@@ -290,13 +358,14 @@ int main()
 					}
 							
 				}
-				rtc.setTime(sec,min,hour,day,month,wday,year);
+				//rtc.setTime(sec,min,hour,day,month,wday,year);
 				rtc.DisplayTimeBlink(sec, min, hour, day, wday, month,year,modeStatus);
 
 			}
 		
 			if (setButton ==1 & IsEditingmode ==1)//if on time editing mode, set button is assigned to set the time
 			{
+			
 				rtc.setTime(0,min,hour,day,month,wday,year);
 				
 				IsEditingmode = 0;
@@ -305,8 +374,8 @@ int main()
 			}
 			if (IsEditingmode == 0)
 			{
-				rtc.ReadTime(&sec,&min,&hour,&day,&wday,&month,&year);
-				rtc.DisplayTime(sec, min, hour, day, wday, month,year);
+				rtc.ReadTime(&sec1,&min1,&hour1,&day1,&wday1,&month1,&year1);
+				rtc.DisplayTime(sec1, min1, hour1, day1, wday1, month1,year1);
 			}
 			else{
 				rtc.DisplayTimeBlink(sec, min, hour, day, wday, month,year,modeStatus);
@@ -314,7 +383,15 @@ int main()
 		
 			
 		}
-		_delay_ms(500);
+		
+		if (backButton == 1)
+		{
+			IsEditingmode = 0;
+			isalarmeditingmode = 0;
+			select_slot = 0;
+		}
+		
+		_delay_ms(200);
 	}
 	
 	
